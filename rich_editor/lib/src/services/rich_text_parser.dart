@@ -65,9 +65,8 @@ class RichTextEditingValueParser {
           var textBefore = currentSelection.textBefore(currentSpan.text);
           var textAfter = currentSelection.textAfter(currentSpan.text);
 
-          log.d("A new child was added at ${textBefore.isEmpty
-              ? "start"
-              : "middle"}.");
+          log.d(
+              "A new child was added at ${textBefore.isEmpty ? "start" : "middle"}.");
 
           if (textBefore.isEmpty) {
             newValue = newValue.copyWith(
@@ -153,7 +152,7 @@ class RichTextEditingValueParser {
 
             if (textBefore.isEmpty) {
               log.d("start");
-              List<TextSpan> children = [
+              List<InlineSpan> children = [
                 new TextSpan(
                   text: text,
                   style: style,
@@ -191,7 +190,7 @@ class RichTextEditingValueParser {
             } else {
               log.d("middle");
 
-              List<TextSpan> children = [
+              List<InlineSpan> children = [
                 new TextSpan(
                   text: text,
                   style: style,
@@ -677,7 +676,7 @@ class RichTextEditingValueParser {
           log.d(
               "-------------------------------------------------END: CHILDREN: startIndex == endIndex");
 
-          var startSpanText = startSpan.text;
+          var startSpanText = startSpan.toPlainText();
 
           var beforeText = startSpanText.substring(
               0, selection.extentOffset - span.text.length);
@@ -701,7 +700,7 @@ class RichTextEditingValueParser {
         else if (endIndex - startIndex == 1) {
           log.d(
               "-------------------------------------------------END: CHILDREN: endIndex - startIndex == 1");
-          var endSpanText = endSpan.text;
+          var endSpanText = endSpan.toPlainText();
 
           var beforeText = endSpanText.substring(
               0,
@@ -734,7 +733,7 @@ class RichTextEditingValueParser {
         else {
           log.d(
               "-------------------------------------------------END: CHILDREN: else");
-          var endSpanText = endSpan.text;
+          var endSpanText = endSpan.toPlainText();
 
           var beforeEndText = endSpanText.substring(
               0,
@@ -807,7 +806,7 @@ class RichTextEditingValueParser {
       if (startIndex == endIndex) {
         log.d(
             "-------------------------------------------------startIndex == endIndex");
-        var startSpanText = startSpan.text;
+        var startSpanText = startSpan.toPlainText();
 
         var beforeText = startSpanText.substring(
             0,
@@ -843,7 +842,7 @@ class RichTextEditingValueParser {
         log.d(
             "-------------------------------------------------endIndex - startIndex == 1");
         //start span
-        var startSpanText = startSpan.text;
+        var startSpanText = startSpan.toPlainText();
         var beforeStartText = startSpanText.substring(
             0,
             selection.baseOffset -
@@ -851,7 +850,7 @@ class RichTextEditingValueParser {
         var afterStartText = startSpanText.substring(beforeStartText.length);
 
         //end span
-        var endSpanText = endSpan.text;
+        var endSpanText = endSpan.toPlainText();
         var beforeEndText = endSpanText.substring(
             0,
             selection.extentOffset -

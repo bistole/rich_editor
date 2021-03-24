@@ -4,7 +4,7 @@ import 'package:rich_editor/src/extensions.dart';
 import 'package:rich_editor/src/services/rich_text_parser.dart';
 import 'package:rich_editor/src/services/text_input.dart';
 import 'package:rich_editor/src/widgets/rich_editable_text.dart';
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 Log log = new Log("rich_text_parser_test");
 
@@ -176,7 +176,7 @@ void main() {
 
   test(
     "Delete.deleteMultipleChildren",
-        () => Delete.deleteMultipleChildren(),
+    () => Delete.deleteMultipleChildren(),
   );
 }
 
@@ -911,8 +911,8 @@ class AddToChild_SameStyle {
     expected = expected.copyWith(
       value: Extensions.copySpanWith(
         base: expected.value,
-        children: RichTextEditingValueParser
-            .optimiseChildren(expected.value.children),
+        children: RichTextEditingValueParser.optimiseChildren(
+            expected.value.children),
       ),
     );
 
@@ -962,8 +962,8 @@ class AddToChild_SameStyle {
     expected = expected.copyWith(
       value: Extensions.copySpanWith(
         base: expected.value,
-        children: RichTextEditingValueParser
-            .optimiseChildren(expected.value.children),
+        children: RichTextEditingValueParser.optimiseChildren(
+            expected.value.children),
       ),
     );
 
@@ -1012,8 +1012,8 @@ class AddToChild_SameStyle {
     expected = expected.copyWith(
       value: Extensions.copySpanWith(
         base: expected.value,
-        children: RichTextEditingValueParser
-            .optimiseChildren(expected.value.children),
+        children: RichTextEditingValueParser.optimiseChildren(
+            expected.value.children),
       ),
     );
 
@@ -1135,8 +1135,8 @@ class AddToChild_DifferentStyle {
     expected = expected.copyWith(
       value: Extensions.copySpanWith(
         base: expected.value,
-        children: RichTextEditingValueParser
-            .optimiseChildren(expected.value.children),
+        children: RichTextEditingValueParser.optimiseChildren(
+            expected.value.children),
       ),
     );
 
@@ -1186,8 +1186,8 @@ class AddToChild_DifferentStyle {
     expected = expected.copyWith(
       value: Extensions.copySpanWith(
         base: expected.value,
-        children: RichTextEditingValueParser
-            .optimiseChildren(expected.value.children),
+        children: RichTextEditingValueParser.optimiseChildren(
+            expected.value.children),
       ),
     );
 
@@ -1813,7 +1813,6 @@ class Delete {
     expect(expected, result);
   }
 
-
   static deleteMultipleChildren() {
     List<TextSpan> children = [
       new TextSpan(
@@ -1840,7 +1839,7 @@ class Delete {
         children: children,
       ),
       selection:
-      new TextSelection.collapsed(offset: text.length - fifthText.length),
+          new TextSelection.collapsed(offset: text.length - fifthText.length),
     );
 
     var newText = rootText + secondText + thirdText + fifthText;

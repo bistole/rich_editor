@@ -21,8 +21,7 @@ class _DropdownMenuPainter extends CustomPainter {
     this.elevation,
     this.selectedIndex,
     this.resize,
-  })
-      : _painter = new BoxDecoration(
+  })  : _painter = new BoxDecoration(
                 // If you add an image here, you must provide a real
                 // configuration in the paint() function and you must provide some sort
                 // of onChanged callback here.
@@ -93,8 +92,7 @@ class _DropdownMenu<T> extends StatefulWidget {
   const _DropdownMenu({
     Key key,
     this.route,
-  })
-      : super(key: key);
+  }) : super(key: key);
 
   final _DropdownRoute<T> route;
 
@@ -157,9 +155,9 @@ class _DropdownMenuState<T> extends State<_DropdownMenu<T>> {
             child: route.items[itemIndex],
           ),
           onTap: () => Navigator.pop(
-                context,
-                new _DropdownRouteResult<T>(route.items[itemIndex].value),
-              ),
+            context,
+            new _DropdownRouteResult<T>(route.items[itemIndex].value),
+          ),
         ),
       ));
     }
@@ -272,8 +270,7 @@ class _DropdownRoute<T> extends PopupRoute<_DropdownRouteResult<T>> {
     this.elevation: 8,
     this.theme,
     @required this.style,
-  })
-      : assert(style != null);
+  }) : assert(style != null);
 
   final List<DropdownMenuItem<T>> items;
   final Rect buttonRect;
@@ -341,6 +338,9 @@ class _DropdownRoute<T> extends PopupRoute<_DropdownRouteResult<T>> {
   void _dismiss() {
     navigator?.removeRoute(this);
   }
+
+  @override
+  String get barrierLabel => null;
 }
 
 /// An item in a menu created by a [DropdownButton].
@@ -355,8 +355,7 @@ class DropdownMenuItem<T> extends StatelessWidget {
     Key key,
     this.value,
     @required this.child,
-  })
-      : assert(child != null),
+  })  : assert(child != null),
         super(key: key);
 
   /// The widget below this widget in the tree.
@@ -391,14 +390,14 @@ class DropdownButtonHideUnderline extends InheritedWidget {
   const DropdownButtonHideUnderline({
     Key key,
     @required Widget child,
-  })
-      : assert(child != null),
+  })  : assert(child != null),
         super(key: key, child: child);
 
   /// Returns whether the underline of [DropdownButton] widgets should
   /// be hidden.
   static bool at(BuildContext context) {
-    return context.inheritFromWidgetOfExactType(DropdownButtonHideUnderline) !=
+    return context.dependOnInheritedWidgetOfExactType<
+            DropdownButtonHideUnderline>() !=
         null;
   }
 
@@ -444,8 +443,7 @@ class DropdownButton<T> extends StatefulWidget {
     this.style,
     this.iconSize: 24.0,
     this.isDense: false,
-  })
-      : assert(items != null),
+  })  : assert(items != null),
         assert(value == null ||
             items
                     .where((DropdownMenuItem<T> item) => item.value == value)
@@ -480,7 +478,7 @@ class DropdownButton<T> extends StatefulWidget {
   /// The text style to use for text in the dropdown button and the dropdown
   /// menu that appears when you tap the button.
   ///
-  /// Defaults to the [TextTheme.subhead] value of the current
+  /// Defaults to the [TextTheme.subtitle1] value of the current
   /// [ThemeData.textTheme] of the current [Theme].
   final TextStyle style;
 
@@ -554,7 +552,7 @@ class _DropdownButtonState<T> extends State<DropdownButton<T>>
   }
 
   TextStyle get _textStyle =>
-      widget.style ?? Theme.of(context).textTheme.subhead;
+      widget.style ?? Theme.of(context).textTheme.subtitle1;
 
   void _handleTap() {
     if (widget.onTap != null) widget.onTap(OnTapState.START);
@@ -567,12 +565,11 @@ class _DropdownButtonState<T> extends State<DropdownButton<T>>
       buttonRect: _kMenuHorizontalPadding.inflateRect(itemRect),
       selectedIndex: _selectedIndex ?? 0,
       elevation: widget.elevation,
-      theme: Theme.of(context, shadowThemeOnly: true),
+      theme: Theme.of(context),
       style: _textStyle,
     );
 
-    Navigator
-        .push(context, _dropdownRoute)
+    Navigator.push(context, _dropdownRoute)
         .then<Null>((_DropdownRouteResult<T> newValue) {
       _dropdownRoute = null;
       if (!mounted || newValue == null) return null;

@@ -183,8 +183,7 @@ class RichEditableText extends StatefulWidget {
     this.onChanged,
     this.onSubmitted,
     this.onSelectionChanged,
-  })
-      : assert(controller != null),
+  })  : assert(controller != null),
         assert(focusNode != null),
         assert(autocorrect != null),
         assert(style != null),
@@ -353,11 +352,11 @@ class RichEditableTextState extends State<RichEditableText>
 
     if (widget.styleController == null)
       _styleController = new StyleController(
-          style: widget.style ?? Theme.of(context).textTheme.subhead);
+          style: widget.style ?? Theme.of(context).textTheme.subtitle1);
     else {
       _styleController = widget.styleController;
       assert(_styleController.value ==
-          (widget.style ?? Theme.of(context).textTheme.subhead));
+          (widget.style ?? Theme.of(context).textTheme.subtitle1));
     }
     _styleController.addListener(_styleChangedListener);
     _styleController.setState(this);
@@ -462,6 +461,7 @@ class RichEditableTextState extends State<RichEditableText>
       case TextInputAction.newline:
         // Do nothing for a "newline" action: the newline is already inserted.
         break;
+      default:
     }
   }
 
@@ -470,7 +470,7 @@ class RichEditableTextState extends State<RichEditableText>
       RichTextEditingValueParser.parse(
           oldValue: _editingValue.copyWith(),
           newValue: new RichTextEditingValue.fromJSON(
-              encoded, widget.style ?? Theme.of(context).textTheme.subhead),
+              encoded, widget.style ?? Theme.of(context).textTheme.subtitle1),
           style: _currentSelectedStyle.copyWith());
 
   void _updateRemoteEditingValueIfNeeded() {
@@ -759,7 +759,16 @@ class RichEditableTextState extends State<RichEditableText>
   Widget build(BuildContext context) {
     log.d(
         "----------------------------------------------------------------------------------------------------------------------BUILD");
-    FocusScope.of(context).reparentIfNeeded(widget.focusNode);
+    // TODO: i am not sure this fix is right.
+    // FocusScope.of(context).reparentIfNeeded(widget.focusNode);
+    FocusScopeNode node = FocusScope.of(context);
+    if (widget.focusNode.parent != null && widget.focusNode.parent != node) {
+      widget.focusNode.unfocus();
+      if (!node.hasFocus) {
+        node.requestFocus();
+      }
+    }
+
     super.build(context); // See AutomaticKeepAliveClientMixin.
     return new Scrollable(
       axisDirection: _isMultiline ? AxisDirection.down : AxisDirection.right,
@@ -777,7 +786,7 @@ class RichEditableTextState extends State<RichEditableText>
             maxLines: widget.maxLines,
             selectionColor: widget.selectionColor,
             textScaleFactor: widget.textScaleFactor ??
-                MediaQuery.of(context, nullOk: true)?.textScaleFactor ??
+                MediaQuery.of(context)?.textScaleFactor ??
                 1.0,
             textAlign: widget.textAlign,
             textDirection: _textDirection,
@@ -814,8 +823,7 @@ class _RichEditable extends LeafRenderObjectWidget {
     this.offset,
     this.onSelectionChanged,
     this.onCaretChanged,
-  })
-      : assert(textDirection != null),
+  })  : assert(textDirection != null),
         super(key: key);
 
   final RichTextEditingValue editingValue;
@@ -870,7 +878,7 @@ class _RichEditable extends LeafRenderObjectWidget {
       ..onSelectionChanged = onSelectionChanged
       ..onCaretChanged = onCaretChanged;
 
-    renderObject.setCaretPrototype(currentStyle.fontSize);
+    renderObject.setCaretPrototype();
   }
 
   TextSpan get _styledTextSpan {

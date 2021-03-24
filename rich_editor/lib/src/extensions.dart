@@ -6,8 +6,8 @@ class Extensions {
   static bool isEmpty(TextSpan textSpan) {
     assert(textSpan.debugAssertIsValid());
     bool isEmpty = true;
-    textSpan.visitTextSpan((TextSpan span) {
-      if (span.text.isNotEmpty) {
+    textSpan.visitChildren((InlineSpan span) {
+      if (span.toPlainText().isNotEmpty) {
         isEmpty = false;
         return false;
       } else
@@ -22,8 +22,8 @@ class Extensions {
   static int length(TextSpan textSpan) {
     assert(textSpan.debugAssertIsValid());
     int length = 0;
-    textSpan.visitTextSpan((TextSpan span) {
-      length += span.text.length;
+    textSpan.visitChildren((InlineSpan span) {
+      length += span.toPlainText().length;
       return true;
     });
     return length;
@@ -34,9 +34,9 @@ class Extensions {
     assert(parent.debugAssertIsValid());
     int offset = 0;
     TextSpan result;
-    parent.visitTextSpan((TextSpan span) {
+    parent.visitChildren((InlineSpan span) {
       assert(result == null);
-      final int endOffset = offset + span.text.length;
+      final int endOffset = offset + span.toPlainText().length;
       if (targetOffset >= offset && targetOffset <= endOffset) {
         result = span;
         return false;
@@ -54,9 +54,9 @@ class Extensions {
     if (parent.children == null || !parent.children.contains(span)) return -1;
 
     int length = 0;
-    parent.visitTextSpan((TextSpan sibling) {
+    parent.visitChildren((InlineSpan sibling) {
       if (span != sibling) {
-        length += sibling.text.length;
+        length += sibling.toPlainText().length;
         return true;
       } else
         return false;
@@ -68,7 +68,7 @@ class Extensions {
   static double maxFontSize(TextSpan textSpan) {
     textSpan.debugAssertIsValid();
     double size = 0.0;
-    textSpan.visitTextSpan((TextSpan span) {
+    textSpan.visitChildren((InlineSpan span) {
       var currentSize = span.style?.fontSize ?? -1.0;
       if (currentSize > size) size = currentSize;
       return true;
@@ -170,7 +170,8 @@ class Extensions {
   static List<TextDecoration> _getDecorationList(TextDecoration decoration) {
     final List<TextDecoration> decorationList = <TextDecoration>[];
 
-    if (decoration == null) {} else if (decoration == TextDecoration.none) {
+    if (decoration == null) {
+    } else if (decoration == TextDecoration.none) {
       decorationList.add(TextDecoration.none);
     } else {
       if (decoration.contains(TextDecoration.underline))

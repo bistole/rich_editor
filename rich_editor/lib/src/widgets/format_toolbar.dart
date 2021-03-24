@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide DropdownButton, DropdownMenuItem;
 import 'package:flutter_logger/flutter_logger.dart';
-import 'package:material_color_picker/material_color_picker.dart';
 import 'package:rich_editor/src/extensions.dart';
 import 'package:rich_editor/src/material/dropdown.dart';
 import 'package:rich_editor/src/material/rich_text_field.dart';
@@ -18,8 +17,7 @@ class FormatToolbar extends StatefulWidget {
   FormatToolbar({
     @required StyleController styleController,
     @required GlobalKey<RichTextFieldState> richTextFieldState,
-  })
-      : _styleController = styleController,
+  })  : _styleController = styleController,
         _richTextFieldState = richTextFieldState;
 
   final StyleController _styleController;
@@ -325,21 +323,22 @@ class _FormatToolbarState extends State<FormatToolbar> {
         onChanged: _setFont,
         value: fontsMap[_fontName],
       ),
-      new ColorPickerButton(
-        button: new Center(
-          child: new Icon(
-            Icons.format_color_text,
-            color: _textColor,
-          ),
-        ),
-        currentColor: _textColor,
-        onColor: _setTextColor,
-        onShow: (type) {
-          widget._richTextFieldState.currentState.prepareForFocusLoss(
-              closeKeyboardIfNeeded:
-                  type == DisplayType.bottomSheet ? true : false);
-        },
-      ),
+      // TODO: pick up color
+      // new ColorPickerButton(
+      //   button: new Center(
+      //     child: new Icon(
+      //       Icons.format_color_text,
+      //       color: _textColor,
+      //     ),
+      //   ),
+      //   currentColor: _textColor,
+      //   onColor: _setTextColor,
+      //   onShow: (type) {
+      //     widget._richTextFieldState.currentState.prepareForFocusLoss(
+      //         closeKeyboardIfNeeded:
+      //             type == DisplayType.bottomSheet ? true : false);
+      //   },
+      // ),
       new IconButton(
         onPressed: _setBold,
         icon: new Icon(

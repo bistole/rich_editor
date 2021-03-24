@@ -1,14 +1,14 @@
 name: rich_editor
 description: Rich editor for flutter platform
 version: 0.0.1
-author:
-homepage:
 
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+  
 dependencies:
   flutter:
     sdk: flutter
   flutter_logger: ^0.0.1
-  material_color_picker: ^0.0.1
 
 dev_dependencies:
   flutter_test:
